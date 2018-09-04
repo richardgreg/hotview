@@ -1,0 +1,25 @@
+{
+  "name": "hoviewwebapp",
+  "version": "1.0.0",
+  "description": "A hotel, motel, and airbnb review web app, where users are able to sign up and provide information about establishments that provide accomodation.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cardo-TheDev/hoview.git"
+  },
+  "keywords": [
+    "hotel",
+    "motel",
+    "review",
+    "price"
+  ],
+  "author": "Richard Gregory <richardgrecoson@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Cardo-TheDev/hoview/issues"
+  },
+  "homepage": "https://github.com/Cardo-TheDev/hoview#readme"
+}
