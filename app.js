@@ -1,39 +1,59 @@
 var     express                 = require("express"),
-        app                     = express()
-        bodyParser              = require("body-parser");
-        mongoose                = require("mongoose");
+        app                     = express(),
+        bodyParser              = require("body-parser"),
+        mongoose                = require("mongoose"),
+        passport                = require("passport"),
+        LocalStrategy           = require("passport-local"),
+        User                    = require("./models/user"),
+        Campground              = require("./models/campground"),
+        Comment                 = require("./models/comment"),
+        flash                   = require("connect-flash"),
+        request                 = require("request"),
+        methodOverride          = require("method-override");
+        //passportLocalMongoose   = require("passport-local-mongoose"),
+        //seedDB                  = require("./seeds");
+        
 
-var campgrounds = [
-        {name: "Salmon Creek", image: "https://images.pexels.com/photos/965153/pexels-photo-965153.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"},
-        {name: "Mountain Dew", image: "https://images.pexels.com/photos/756780/pexels-photo-756780.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"},
-        {name: "Savannah Valley", image: "https://images.pexels.com/photos/803226/pexels-photo-803226.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"}
-        ];
+var commentRoutes = require("./routes/comments"),
+    indexRoutes = require("./routes/index"),
+    campgroundRoutes = require("./routes/campgrounds");
 
-mongoose.connect("mongodb://localhost/hoview");
-app.use(bodyParser.urlencoded({extended:true}));
+//Passport Configuration
+app.use(require("express-session")({
+    secret: "ChemicalX",
+    resave: false,
+    saveUninitialized: false
+}));
+
+mongoose.connect("mongodb://localhost:27017/hoview");//localhost:27017 works too
 app.set("view engine", "ejs");
+app.use(methodOverride("_method"));
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.static(__dirname + "/public"));
+app.use(flash());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
-app.get('/', function(req, res){
-    res.render("landing");
+// Parse current user to all routes
+app.use(function(req, res, next){
+    res.locals.currentUser = req.user;
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
+    next();
 });
 
-app.get('/campgrounds', function(req, res){
-    
+// Seed the database
+//seedDB();
 
-    res.render("campgrounds", {campgrounds:campgrounds});
-});
-
-app.post('/campgrounds', function(req, res){
-    var name = req.body.name;
-    var image = req.body.image;
-    var newCampground = {name:name, image:image};
-    campgrounds.push(newCampground);
-    res.redirect("/campgrounds");
-});
-
-app.get("/campgrounds/new", function(req, res) {
-    res.render("new.ejs");
-});
+//===================
+//Require routes
+//===================
+app.use("/campgrounds/:id/comments", commentRoutes);
+app.use("/", indexRoutes);
+app.use("/campgrounds", campgroundRoutes);
 
 app.listen(3000, function(){
     console.log("Hoview server is up and running!!!");
