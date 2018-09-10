@@ -18,6 +18,9 @@ router.post("/register", function(req, res) {
     // req.body.username;
     // req.body.password;
     var newUser = new User({username: req.body.username});
+    if (req.body.adminCode === "AwesomoApp"){
+        newUser.isAdmin = true;
+    }
     User.register(newUser, req.body.password, function(err, user){
         if(err){
             console.log(err);
