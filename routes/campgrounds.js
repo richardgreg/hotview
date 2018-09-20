@@ -7,6 +7,7 @@ var middleware = require("../middleware");
 router.get('/', function(req, res){
     var noMatch = null;
     if (req.query.search) {
+        //code for search
         const regex = new RegExp(escapeRegex(req.query.search), 'gi');
         //Get searched campgrounds from DB
         Campground.find({name: regex}, function(err, allCampgrounds){
@@ -15,6 +16,7 @@ router.get('/', function(req, res){
                 console.log("Error");
             }else{
                 if(allCampgrounds.length < 1){
+                    //You can add flash message here instead!
                     noMatch = "No campgrounds match that query, please try again.";
                 }
                 res.render("campgrounds/index", {campgrounds:allCampgrounds, noMatch: noMatch, page: 'campgrounds'});
@@ -54,7 +56,7 @@ router.post('/', middleware.isLoggedIn, function(req, res){
     });
 });
 
-//NEW - Add new form to campground
+//NEW - Displays "new campground" form
 router.get("/new",middleware.isLoggedIn, function(req, res) {
     res.render("campgrounds/new");
 });
@@ -91,6 +93,7 @@ router.put("/:id", middleware.checkCampgroundOwnership, function(req, res){
         if(err){
             res.redirect("/campgrounds");
         }else{
+            req.flash("success", "Campground successfully updated.");
             res.redirect("/campgrounds/"+ req.params.id);
         }
     });
@@ -103,11 +106,13 @@ router.delete("/:id", middleware.checkCampgroundOwnership, function(req, res){
         if(err){
             res.redirect("/campgrounds");
         }else{
+            req.flash("success", "Campground successfully deleted.");
             res.redirect("/campgrounds");
         }
     });
 });
 
+//Regular expression for search
 function escapeRegex(text) {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 };

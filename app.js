@@ -4,19 +4,21 @@ var     express                 = require("express"),
         mongoose                = require("mongoose"),
         passport                = require("passport"),
         LocalStrategy           = require("passport-local"),
+        flash                   = require("connect-flash"),
+        request                 = require("request"),
+        methodOverride          = require("method-override"), //custom methods
+
         User                    = require("./models/user"),
         Campground              = require("./models/campground"),
         Comment                 = require("./models/comment"),
-        flash                   = require("connect-flash"),
-        request                 = require("request"),
-        methodOverride          = require("method-override");
+        commentRoutes           = require("./routes/comments"),
+        indexRoutes             = require("./routes/index"),
+        campgroundRoutes        = require("./routes/campgrounds");
+        
+        
         //passportLocalMongoose   = require("passport-local-mongoose"),
         //seedDB                  = require("./seeds");
-        
 
-var commentRoutes = require("./routes/comments"),
-    indexRoutes = require("./routes/index"),
-    campgroundRoutes = require("./routes/campgrounds");
 
 //Passport Configuration
 app.use(require("express-session")({
@@ -25,13 +27,13 @@ app.use(require("express-session")({
     saveUninitialized: false
 }));
 
-mongoose.connect("mongodb://localhost:27017/hoview");//localhost:27017 works too
+mongoose.connect("mongodb://localhost:27017/hoview", { useNewUrlParser: true });
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "/public")); //loads static files in public dir
 app.use(flash());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());

@@ -16,8 +16,6 @@ router.get("/register", function(req, res) {
 
 //Handle signup logic
 router.post("/register", function(req, res) {
-    // req.body.username;
-    // req.body.password;
     var newUser = new User({
         username: req.body.username,
         firstName: req.body.firstName,
@@ -47,10 +45,13 @@ router.get('/login', function(req, res){
     res.render("login", {page: 'login'});
 });
 
-router.post('/login',passport.authenticate("local",{
+router.post('/login', passport.authenticate("local",{
     successRedirect: "/campgrounds",
     failureRedirect: "/login"
 }), function(req, res){
+    if (successRedirect) {
+        req.flash("success", "Welcome back " + user.username);
+    }
 });
 
 //Logout

@@ -2,7 +2,6 @@ var express = require("express");
 //merges params from campground and comments
 var router  = express.Router({mergeParams: true});
 var Campground = require("../models/campground");
-// var Comment = require("../models/campground"); /y/ you were requiring the campground.js model instead of comment.js
 var Comment = require("../models/comment");
 var middleware = require("../middleware");
 
@@ -39,7 +38,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
                   campground.save();
                   console.log(comment);
                   req.flash("success", "Comment successfully addedd");
-                  res.redirect("/campgrounds/"+campground._id);
+                  return res.redirect("/campgrounds/"+campground._id);
                }
             });
         }
@@ -70,6 +69,7 @@ router.put("/:comment_id", middleware.checkCommentOwnership, function(req, res){
         if(err){
             res.redirect("back");
         }else{
+            req.flash("success", "Comment updated successfully");
             res.redirect("/campgrounds/"+ req.params.id);
         }
     });
