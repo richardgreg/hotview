@@ -1,0 +1,5 @@
+# ignore file named `env` 
+.env
+
+# ignore file named `notes`
+notes.txt

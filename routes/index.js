@@ -160,13 +160,13 @@ router.post('/reset/:token', function(req, res) {
       var smtpTransport = nodemailer.createTransport({
         service: 'Gmail', 
         auth: {
-          user: 'learntocodeinfo@gmail.com',
+          user: 'cardothecreator@gmail.com',
           pass: process.env.GMAILPW
         }
       });
       var mailOptions = {
         to: user.email,
-        from: 'learntocodeinfo@mail.com',
+        from: 'cardothecreator.com',
         subject: 'Your password has been changed',
         text: 'Hello,\n\n' +
           'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
@@ -177,6 +177,10 @@ router.post('/reset/:token', function(req, res) {
       });
     }
   ], function(err) {
+      if (err) {
+        req.flash("error", "Oops! Something went wrong");
+        res.redirect('/campgrounds')
+      }
     res.redirect('/campgrounds');
   });
 });
