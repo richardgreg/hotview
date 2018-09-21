@@ -6,7 +6,8 @@ var     express                 = require("express"),
         LocalStrategy           = require("passport-local"),
         flash                   = require("connect-flash"),
         request                 = require("request"),
-        methodOverride          = require("method-override"), //custom methods
+        methodOverride          = require("method-override"), //for custom methods
+        dotEnv                  = require("dotenv").config();
 
         User                    = require("./models/user"),
         Campground              = require("./models/campground"),

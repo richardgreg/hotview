@@ -52,7 +52,8 @@ router.get('/login', function(req, res){
 router.post('/login', passport.authenticate("local",{
     successRedirect: "/campgrounds",
     failureRedirect: "/login",
-    successFlash: 'Welcome to YelpCamp!'
+    successFlash: 'Welcome to YelpCamp!',
+    failureFlash: "Incorrect password or username"
 }), function(req, res){
 });
 
