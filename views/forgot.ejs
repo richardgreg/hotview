@@ -1,15 +1,18 @@
 <% include ./partials/header %>
-<div class="row">
-    <div class="col-md-12">
+<div style="text-align: center" class="row">
+    <div style="width: 30%; margin: 25px auto;">
         <form action="/forgot" method="POST">
-            <legend>Forgot Password</legend>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" name="email" autofocus class="form-control">
+            <legend >Trouble logging in?</legend>
+            <p>Enter your email and we'll send you a link to get back into your account.</p>
+            <div style="padding-left: 90px" class="form-group input-group">
+                <label for="email"></label>
+                <input type="email" name="email" autofocus class="form-control" placeholder="Email">
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Reset Password">
+                <input type="submit" class="btn btn-primary" value="Send Login Link">
             </div>
+            <hr>OR<hr>
+            <a href="/register">Create New Account</a>
         </form>
     </div>
 </div>
