@@ -28,7 +28,7 @@ app.use(require("express-session")({
     saveUninitialized: false
 }));
 
-mongoose.connect("mongodb://localhost:27017/hoview", { useNewUrlParser: true });
+mongoose.connect("mongodb://localhost:27017/hotview", { useNewUrlParser: true });
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
 app.use(bodyParser.urlencoded({extended: true}));
