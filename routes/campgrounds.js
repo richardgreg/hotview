@@ -79,7 +79,7 @@ router.post("/", middleware.isLoggedIn, upload.single('image'), function(req, re
           req.flash('error', err.message);
           return res.redirect('back');
         }
-        res.redirect('/campgrounds/' + campground.id);
+        res.redirect('/campgrounds');
       });
     });
 });
